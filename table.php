@@ -16,6 +16,7 @@
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <style type="text/css">
@@ -35,8 +36,8 @@ input[type=text]:focus {
 </head>
 <body>
 
-<div class="container">
-	<center><h1>Letter List</h1></center>
+<div class="container-fluid ">
+	<center><h1>Movement of letters</h1></center>
 <a href="logout.php" class="btn btn-success float-right"><i class="material-icons glyphicon glyphicon-log-out"> </i><span>Log Out</span></a>	<div class="row">
 		
 		<div class="col-md-10 col-md-offset-1">
@@ -83,22 +84,27 @@ input[type=text]:focus {
         <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Subject&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
         <th>Recieved_date</th>
         <th><?php echo $_SESSION['Name']; ?></th>
-        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Instruction&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-        <th>Actions Taken</th>
+        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Actions_Taken&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
     </tr>
   </thead>
   <tbody>
   	<?php while ($row = $rows->fetch_assoc()): ?>
     <tr>
-    		<td><?php echo date("d/m/Y", strtotime($row['date'])); ?></td>
+    		    <td><?php echo date("d/m/Y", strtotime($row['date'])); ?></td>
             <td><?php echo $row['letterno'] ?></td>
             <td><?php echo $row['subject'] ?></td>
             <td><?php echo date("d/m/Y", strtotime($row['recievedate'])); ?></td>
             <td><input type="checkbox" name="sredpm" ></td>
-            <td><?php //echo $row['comment'];?></td>
-            <td><textarea name="action"></textarea></td>
-            
-    </tr>
+            <td>
+                  <form method="POST" id="comment_form">
+                    <div class="form-group">
+                      <textarea name="comment_content" id="comment_content" class="form-control" placeholder="Enter Comment"></textarea>
+                    </div>
+                  </form>
+                  <input type="hidden" name="comment_id" id="comment_id" value="0" />
+                  <input type="submit" name="submit" id="submit" class="btn btn-info" value="Submit" />
+            </td>
+      </tr>
 	<?php endwhile ?>
 			
   </tbody>
@@ -107,6 +113,54 @@ input[type=text]:focus {
 
 	</div>
 </div>	
+
+<script>
+$(document).ready(function(){
+ 
+ $('#comment_form').on('submit', function(event){
+  event.preventDefault();
+  var form_data = $(this).serialize();
+  $.ajax({
+   url:"add_comment.php",
+   method:"POST",
+   data:form_data,
+   dataType:"JSON",
+   success:function(data)
+   {
+    if(data.error != '')
+    {
+     $('#comment_form')[0].reset();
+     $('#comment_message').html(data.error);
+     $('#comment_id').val('0');
+     load_comment();
+    }
+   }
+  })
+ });
+
+ load_comment();
+
+ function load_comment()
+ {
+  $.ajax({
+   url:"fetch_comment.php",
+   method:"POST",
+   success:function(data)
+      {
+    $('#display_comment').html(data);
+   }
+  })
+ }
+
+ $(document).on('click', '.reply', function(){
+  var comment_id = $(this).attr("id");
+  $('#comment_id').val(comment_id);
+  $('#comment_name').focus();
+ });
+ 
+});
+</script>
+
 
 </body>
 </html>
