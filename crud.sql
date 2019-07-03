@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 01, 2019 at 12:59 PM
+-- Generation Time: Jul 03, 2019 at 01:26 PM
 -- Server version: 10.1.32-MariaDB
 -- PHP Version: 7.2.5
 
@@ -56,6 +56,20 @@ INSERT INTO `records` (`id`, `date`, `letterno`, `subject`, `recievedate`, `sred
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_comment`
+--
+
+CREATE TABLE `tbl_comment` (
+  `comment_id` int(11) NOT NULL,
+  `parent_comment_id` int(11) NOT NULL,
+  `comment` varchar(2000) NOT NULL,
+  `comment_sender_name` varchar(40) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -87,6 +101,12 @@ ALTER TABLE `records`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tbl_comment`
+--
+ALTER TABLE `tbl_comment`
+  ADD PRIMARY KEY (`comment_id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -101,6 +121,12 @@ ALTER TABLE `user`
 --
 ALTER TABLE `records`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT for table `tbl_comment`
+--
+ALTER TABLE `tbl_comment`
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`
