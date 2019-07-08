@@ -18,14 +18,16 @@ $file_tmp =$_FILES['image']['tmp_name'];
 $file_type=$_FILES['image']['type'];
 $file_ext=strtolower(end(explode('.',$_FILES['image']['name'])));
       
-      $extensions= array("jpeg","jpg","png");
+
+      $extensions= array("jpeg");
       
       if(in_array($file_ext,$extensions)== false){
-         $errors[]="extension not allowed, please choose a JPEG or PNG file.";
+      	substr($file_name, 0, -strlen(pathinfo($file_name, PATHINFO_EXTENSION)))."jpeg"
+         //$errors[]="extension not allowed, please choose a JPEG or PNG file.";
       }
 
        if($file_size > 2097152){
-         $errors[]='File size must be excately 2 MB';
+         $errors[]='File size must be exceeded 2 MB';
       }
        if(empty($errors)==true){
 

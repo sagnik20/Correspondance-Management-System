@@ -292,9 +292,10 @@ $(document).ready(function(){
 							</span>
 						</th>
                         <th>Name</th>
+                        <th>User name</th>
                         <th>Email</th>
-						<th>Address</th>
-                        <th>Phone</th>
+						<th>Password</th>
+                        <th>Gender</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -307,6 +308,7 @@ $(document).ready(function(){
 								<label for="checkbox1"></label>
 							</span>
 						</td>
+						<td><?php echo $row['Name'] ?></td>
                         <td><?php echo $row['user_name'] ?></td>
                         <td><?php echo $row['email'] ?></td>
 						<td><?php echo $row['pass'] ?></td>
@@ -319,6 +321,7 @@ $(document).ready(function(){
                      <?php endwhile;?>	
                 </tbody>
             </table>
+            <!--
 			<div class="clearfix">
                 <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
                 <ul class="pagination">	
@@ -330,14 +333,14 @@ $(document).ready(function(){
                     <li class="page-item"><a href="#" class="page-link">5</a></li>
                     <li class="page-item"><a href="#" class="page-link">Next</a></li>
                 </ul>
-            </div>
+            </div>-->
         </div>
     </div>
 	<!-- Edit Modal HTML -->
 	<div id="addEmployeeModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form>
+				<form method="post" action="addusr.php">
 					<div class="modal-header">						
 						<h4 class="modal-title">Add Employee</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -345,24 +348,28 @@ $(document).ready(function(){
 					<div class="modal-body">					
 						<div class="form-group">
 							<label>Name</label>
-							<input type="text" class="form-control" required>
+							<input type="text" name="name" class="form-control" required>
 						</div>
 						<div class="form-group">
 							<label>Email</label>
-							<input type="email" class="form-control" required>
+							<input type="email" name="email" class="form-control" required>
 						</div>
 						<div class="form-group">
-							<label>Address</label>
-							<textarea class="form-control" required></textarea>
+							<label>User Name</label>
+							<input type="text" name="username" class="form-control" required></input>
 						</div>
 						<div class="form-group">
-							<label>Phone</label>
-							<input type="text" class="form-control" required>
+							<label>Password</label>
+							<input type="text" name="pass" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Gender</label>
+							<input type="text" name="gender" class="form-control" required>
 						</div>					
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<input type="submit" class="btn btn-success" value="Add">
+						<input type="submit" name="submit" class="btn btn-success" value="Add">
 					</div>
 				</form>
 			</div>
@@ -388,7 +395,7 @@ $(document).ready(function(){
 						</div>
 						<div class="form-group">
 							<label>Address</label>
-							<textarea class="form-control" required></textarea>
+							<input class="form-control" required></input>
 						</div>
 						<div class="form-group">
 							<label>Phone</label>
