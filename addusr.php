@@ -18,5 +18,5 @@
 
 	}
 
-	//header("Location: http://localhost/crud/adduser.php");
+	header("Location: http://localhost/crud/adduser.php");
 ?>
